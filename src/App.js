@@ -19,7 +19,7 @@ function App() {
   const [siteData, setSiteData] = useState(null);
   useEffect(() => {
     const options = {
-      url: 'https://portal.zameelapp.com/api/gethometabdata',
+      url: '/api/gethometabdata',
       method: 'POST',
       headers: {
         'Accept': 'application/json',
