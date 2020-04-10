@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './Home';
 import { About } from './About';
 import { FeatureVideos } from './FeatureVideos';
+import { AudioList } from './AudioList';
 import { NoMatch } from './NoMatch';
 import { NavigationBar } from './components/NavigationBar';
 import {SiteContext} from './SiteContext';
@@ -36,7 +37,9 @@ function App() {
     .then(response => {
       //console.log(response);
       response.data.banner_list = _.orderBy(response.data.banner_list, ['order'], ['asc']);
-      response.data.video_list = _.orderBy(response.data.video_list, ['published_at'], ['desc']);
+      response.data.video_list = _.orderBy(response.data.video_list, ['priority'], ['desc']);
+      response.data.audio_list = _.orderBy(response.data.audio_list, ['priority'], ['desc']);
+
       console.log('actual response', response)
       setSiteData(response.data);
     });
@@ -59,6 +62,7 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
               <Route exact path="/featureVideos" component={FeatureVideos} />
+              <Route exact path="/audioList" component={AudioList} />
               <Route component={NoMatch} />
             </Switch>
           </Router>

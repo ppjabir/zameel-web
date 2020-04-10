@@ -13,7 +13,7 @@ export const FeatureVideos = (props) => {
     const [videoId, setVideoId] = useState(videoIdParam ? videoIdParam : '' );
     if(siteData && siteData.video_list && siteData.video_list.length > 0) {
         //console.log('jabir====', siteData)
-        allFeaturedVideo = siteData.video_list.filter((item)=> item.deleted_at === null && item.featured === 2 )
+        allFeaturedVideo = siteData.video_list.filter((item)=> item.deleted_at === null)
     }
     const handlethumbnailClick = (videoPlayingId) => {
         setVideoId(videoPlayingId)
@@ -24,7 +24,10 @@ export const FeatureVideos = (props) => {
                 <div className="all-featured-list" onClick={()=>handlethumbnailClick(featureVideoItem.video)}>
                     <Row>
                         <Col xs={5} md={3}><img src={`${contextData.youTubeThumb}${featureVideoItem.video}/mqdefault.jpg`} alt={"video list"}/></Col>
-                        <Col xs={7} md={9}><p>{featureVideoItem.title_1}</p></Col>
+                        <Col xs={7} md={9}>
+                            <p className="text-info">{featureVideoItem.title_1}</p>
+                            <h6><small>{featureVideoItem.tags.split(',')[0]}</small></h6>
+                        </Col>
                     </Row>
                 </div>
             ))
@@ -84,5 +87,19 @@ const Styles = Styled.div`
     }
     .featureVideoContainer {
         padding: 20px 0;
+    }
+    .all-featured-list {
+        p {
+            padding: 7px 10px 0 0;
+            margin-bottom: 6px;
+        }
+        h6 {
+            margin-bottom: 0;
+        }
+        &:hover {
+            .text-info, h6 {
+                color: #007bff!important
+            }
+        }
     }
 `

@@ -22,6 +22,7 @@ export const NavigationBar = () => {
                         <Nav className="ml-auto">
                             <NavItem><Link to="/about">About</Link></NavItem>
                             <NavItem><Link to="/featureVideos">Feature Videos</Link></NavItem>
+                            <NavItem><Link to="/audioList">Latest Audio</Link></NavItem>
                         </Nav>
                         
                     </Navbar.Collapse>
