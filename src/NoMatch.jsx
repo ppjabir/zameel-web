@@ -1,9 +1,11 @@
-import React from 'react';
-
+import React from "react";
+import {Container} from "react-bootstrap"
 export const NoMatch = () => {
     return (
         <>
-            <h3>404 error page</h3>
+            <Container>
+                <h3>404 error page</h3>
+            </Container>
         </>
     )
 }

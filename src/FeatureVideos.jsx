@@ -1,12 +1,12 @@
 import React, { useContext,useState, useEffect } from 'react';
 import {SiteContext} from './SiteContext';
-import {Row, Col } from 'react-bootstrap';
+import {Row, Col, Container } from 'react-bootstrap';
 import Styled from "styled-components";
 
 export const FeatureVideos = (props) => {
     console.log('props',props)
     var contextData = useContext(SiteContext);
-    const videoIdParam = props.location.state &&  props.location.state.videoIdParamprops ? 
+    const videoIdParam = props.location && props.location.state &&  props.location.state.videoIdParamprops ? 
     props.location.state.videoIdParamprops : '';
     const {siteData} = contextData;
     var allFeaturedVideo=[];
@@ -35,18 +35,21 @@ export const FeatureVideos = (props) => {
     }, [videoId])
     return (
         <Styles>
-            { videoId && (
-                <div class="ifram-container">
-                    <iframe width="420"
-                        height="345"
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&cc_load_policy&fs=0&modestbranding=1`} allow="autoplay" frameborder="0">
-                    </iframe>
+            <Container>
+                { videoId && (
+                    <div class="ifram-container">
+                        <iframe width="420"
+                            height="345"
+                            title="Video Player"
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay" frameborder="0">
+                        </iframe>
+                    </div>
+                )}
+                <div className="featureVideoContainer">
+                
+                    {allFeatureVideoList.length >0 && allFeatureVideoList(allFeaturedVideo)}
                 </div>
-            )}
-            <div className="featureVideoContainer">
-            
-                {allFeatureVideoList.length >0 && allFeatureVideoList(allFeaturedVideo)}
-            </div>
+            </Container>
         </Styles>
     )
 }

@@ -1,7 +1,6 @@
 import React , { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Layout } from './components/Layout';
 import { Home } from './Home';
 import { About } from './About';
 import { FeatureVideos } from './FeatureVideos';
@@ -52,20 +51,30 @@ function App() {
   return (
     <>
       <SiteContext.Provider value={zameelContextData}>
-        <Layout>
-          <NavigationBar />
+        
+        
           <Router>
+          <NavigationBar />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/about" component={About} />
-              <Route path="/featureVideos" component={FeatureVideos} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/featureVideos" component={FeatureVideos} />
               <Route component={NoMatch} />
             </Switch>
           </Router>
-        </Layout>
+          
+        
+        <footer className='footer mt-auto py-3 bg-secondary "color-nav" text-white'>
+          <div className="text-center">
+            <small>@copyright&copy;wisdom islamic organization</small>
+          </div>
+        </footer>
       </SiteContext.Provider>
     </>
   );
 }
 
 export default App;
+
+
+

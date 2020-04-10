@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {SiteContext} from './SiteContext';
 import { Carousel } from './components/Carousel';
-import {Row, Col, Button } from 'react-bootstrap';
+import {Row, Col, Button, Container } from 'react-bootstrap';
 import Styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
@@ -30,24 +30,26 @@ export const Home = () => {
     }
     return (
         <Styles>
-            <div className="header-slider">
-                <Carousel carouselData={headerImageListArray} slideIdentity = {"banner"}/>
-            </div>
-            <div>
-                <Row>
-                    <Col xs={8}>
-                        <h2 className="sub-heading">Videos of the day</h2>
-                    </Col>
-                    <Col xs={4}>
-                    <Button className="float-right" variant="primary" size="sm" onClick={()=>navigateToVideoList()}>
-                        <strong>More</strong>
-                    </Button>{' '}
-                    </Col>
-                </Row>
-                <div className="featured-videos">
-                    <Carousel carouselData={homeVideoList} slideIdentity = {"home_video"}/>
+            <Container>
+                <div className="header-slider">
+                    <Carousel carouselData={headerImageListArray} slideIdentity = {"banner"}/>
                 </div>
-            </div>
+                <div>
+                    <Row>
+                        <Col xs={8}>
+                            <h2 className="sub-heading">Videos of the day</h2>
+                        </Col>
+                        <Col xs={4}>
+                        <Button className="float-right" variant="primary" size="sm" onClick={()=>navigateToVideoList()}>
+                            <strong>More</strong>
+                        </Button>{' '}
+                        </Col>
+                    </Row>
+                    <div className="featured-videos">
+                        <Carousel carouselData={homeVideoList} slideIdentity = {"home_video"}/>
+                    </div>
+                </div>
+            </Container>
         </Styles>
     )
 }
@@ -57,6 +59,7 @@ const Styles = Styled.div`
     .header-slider {
         min-height: 300px;
         margin-bottom: 30px;
+        position: relative;
         @media screen and (max-width: 576px) {
             min-height: 100px;
             margin-bottom: 15px;
@@ -68,6 +71,12 @@ const Styles = Styled.div`
         @media screen and (min-width: 700px) and (max-width: 992px){
             min-height: 170px;
         }
+        .spinner-border {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -10px 0 0 -10px;
+        }
     }
     .sub-heading {
         color: #808080;
@@ -75,5 +84,13 @@ const Styles = Styled.div`
     }
     .featured-videos {
         padding-top: 10px;
+        position: relative;
+        min-height: 100px;
+    }
+    .spinner-border {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -10px 0 0 -10px;
     }
 `

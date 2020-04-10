@@ -145,5 +145,16 @@ const Styles = Styled.div`
         }
       }
     }
+    .slick-dots {
+      bottom: 25px;
+      li {
+        button {
+          &:before {
+            color: #fff;
+            font-size: 12px;
+          }
+        }
+      }
+    }
   }
 `
