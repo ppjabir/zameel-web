@@ -20,8 +20,8 @@ export const FeatureVideos = (props) => {
     }
     const allFeatureVideoList = (allFeaturedVideo) => {
         return (
-            allFeaturedVideo.map(featureVideoItem => (
-                <div className="all-featured-list" onClick={()=>handlethumbnailClick(featureVideoItem.video)}>
+            allFeaturedVideo.map((featureVideoItem, key) => (
+                <div key={key} className="all-featured-list" onClick={()=>handlethumbnailClick(featureVideoItem.video)}>
                     <Row>
                         <Col xs={5} md={3}><img src={`${contextData.youTubeThumb}${featureVideoItem.video}/mqdefault.jpg`} alt={"video list"}/></Col>
                         <Col xs={7} md={9}>

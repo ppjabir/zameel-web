@@ -22,7 +22,7 @@ export const Carousel = (props) =>{
         autoplay: true,
         pauseOnHover: true
       }
-    }else if(slideIdentity === 'home_video' || slideIdentity === 'home_audio') {
+    }else if(slideIdentity === 'home_video' || slideIdentity === 'home_audio' || slideIdentity === 'home_docs') {
       settings = {
         dots: false,
         infinite: false,
@@ -64,23 +64,25 @@ export const Carousel = (props) =>{
     }
 
     const history = useHistory();
-    const playCurrentVideo = (videoId, clickType) => {
+    const playCurrentVideo = (fileId, clickType) => {
         if(clickType === 'video_click') {
-          history.push('/featureVideos',{videoIdParamprops:videoId})
+          history.push('/featureVideos',{videoIdParamprops:fileId})
+        }else if(clickType === 'audio_click'){
+          history.push('/audioList',{audioIdParamprops:fileId})
         }
     }
     
     const displayCarousel =(slideIdentity) => {
       if(slideIdentity === 'banner') {
         return (
-          carouselData.map(carouselItem => (
-            <img src={`${contextData.fileURL}${carouselItem.file}`} alt="{banner}" />
+          carouselData.map((carouselItem, index) => (
+            <img key={index} src={`${contextData.fileURL}${carouselItem.file}`} alt="{banner}" />
           ))
         )
       }else if(slideIdentity === 'home_video') {
         return (
-          carouselData.map(carouselItem => (
-            <div className="video-list-item" onClick={()=>playCurrentVideo(carouselItem.video, 'video_click')}>
+          carouselData.map((carouselItem,index) => (
+            <div key={index} className="video-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'video_click')}>
               <div className="video-item">
                 <img src={`${contextData.youTubeThumb}${carouselItem.video}/mqdefault.jpg`} alt={"video list"}/>
                 <Shiitake lines={2} throttleRate={200} className="video-title text-info" tagName="p">
@@ -93,14 +95,29 @@ export const Carousel = (props) =>{
         )
       }else if(slideIdentity === 'home_audio') {
         return (
-          carouselData.map(carouselItem => (
-            <div className="audio-list-item" onClick={()=>playCurrentVideo(carouselItem.video, 'audio_click')}>
+          carouselData.map((carouselItem, index) => (
+            <div key={index} className="audio-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'audio_click')}>
               <div className="audio-item">
                 <img src={`${contextData.fileURL}${carouselItem.thumbnail}`} alt={"audio list"}/>
                 <Shiitake lines={2} throttleRate={200} className="audio-title text-info" tagName="p">
                   {carouselItem.title_1}
                 </Shiitake>
                 <h6><small>{carouselItem.tags.split(',')[0]}</small></h6>
+                
+              </div>
+            </div>
+          ))
+        )
+      }else if(slideIdentity === 'home_docs') {
+        return (
+          carouselData.map((carouselItem,index) => (
+            <div key={index} className="audio-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'audio_click')}>
+              <div className="docs-item">
+                <img src={`${contextData.fileURL}${carouselItem.thumbnail}`} alt={"docs list"}/>
+                <Shiitake lines={2} throttleRate={200} className="audio-title text-info" tagName="p">
+                  {carouselItem.title_1}
+                </Shiitake>
+                <h6><small>{carouselItem.title_1_ml}</small></h6>
                 
               </div>
             </div>
@@ -113,8 +130,8 @@ export const Carousel = (props) =>{
     return (
       <Styles>
         {carouselData.length === 0? (
-          <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         ):(
           <Slider {...settings} className={slideIdentity}>
@@ -128,7 +145,7 @@ export const Carousel = (props) =>{
 
 const Styles = Styled.div`
   .slick-slider {
-    &.home_video, &.home_audio {
+    &.home_video, &.home_audio, &.home_docs {
       .slick-prev,
       .slick-next {
         &:before {
@@ -152,7 +169,8 @@ const Styles = Styled.div`
             }
 
             .video-item,
-            .audio-item {
+            .audio-item,
+            .docs-item {
               min-width: 0;
               word-wrap: break-word;
               background-clip: border-box;
@@ -180,7 +198,8 @@ const Styles = Styled.div`
                 }
               }
             }
-            .audio-item {
+            .audio-item,
+            .docs-item {
               min-height: 180px;
               @media screen and (min-width: 992px) and (max-width: 1200px) {
                 min-height: 170px;
@@ -229,7 +248,8 @@ const Styles = Styled.div`
         }
       }
     }
-    .audio-item {
+    .audio-item,
+    .docs-item {
       img {
         max-width: 80%;
         margin: 0 auto;

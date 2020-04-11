@@ -8,6 +8,7 @@ import { AudioList } from './AudioList';
 import { NoMatch } from './NoMatch';
 import { NavigationBar } from './components/NavigationBar';
 import {SiteContext} from './SiteContext';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 var _ = require('lodash');
 
@@ -39,6 +40,7 @@ function App() {
       response.data.banner_list = _.orderBy(response.data.banner_list, ['order'], ['asc']);
       response.data.video_list = _.orderBy(response.data.video_list, ['priority'], ['desc']);
       response.data.audio_list = _.orderBy(response.data.audio_list, ['priority'], ['desc']);
+      response.data.documents_list = _.sortBy(response.data.documents_list, function(o) { return new moment(o.date).format('YYYYMMDD'); }).reverse();
 
       console.log('actual response', response)
       setSiteData(response.data);

@@ -12,9 +12,30 @@ export const Home = () => {
     console.log('contextdata####', contextData);
     var headerImageListArray = [],
       homeVideoList=[],
-      homeAudioList=[];
+      homeAudioList=[],
+      homeDocList=[];
     if(siteData && siteData.banner_list && siteData.banner_list.length > 0) {
         headerImageListArray = siteData.banner_list.filter((item)=> item.deleted_at === null)
+    }
+    if(siteData && siteData.documents_list && siteData.documents_list.length > 0) {
+        homeDocList = siteData.documents_list.filter((item)=> item.featured === 2 && item.deleted_at === null);
+        //replace( /(<([^>]+)>)/ig, '')
+        if(homeDocList.length > 0) {
+            homeDocList = homeDocList.map((item) => {
+                if(!item.hasOwnProperty('thumbnail') || (item.hasOwnProperty('thumbnail') && item.thumbnail === null)) {
+                    const id = item.id;
+                    const findCategoryList = siteData.item_mappings.filter((item) => {
+                        return item.item_id === id && item.mapping_type === "3"
+                    });
+                    const findCategoryId = findCategoryList[0].category_id;
+                    const findThumbnail = siteData.category_list.filter((item)=> item.id === findCategoryId );
+                    return {...item, 'thumbnail' : findThumbnail[0].thumbnail}
+                }else {
+                    return item;
+                }
+                
+            })
+        }
     }
     if(siteData && siteData.video_list && siteData.video_list.length > 0) {
         homeVideoList = siteData.video_list.filter((item)=> item.featured === 2 )
@@ -41,7 +62,7 @@ export const Home = () => {
             })
         }
         
-        console.log('Audio list#####:', homeAudioList)
+        console.log('Doclist#################:', homeDocList)
     }
 
 
@@ -90,6 +111,20 @@ export const Home = () => {
                 </Row>
                 <div className="featured-audios">
                     <Carousel carouselData={homeAudioList} slideIdentity = {"home_audio"}/>
+                </div>
+
+                <Row>
+                    <Col xs={8}>
+                        <h2 className="sub-heading">Latest Documents</h2>
+                    </Col>
+                    <Col xs={4}>
+                        <Button className="float-right" variant="primary" size="sm" onClick={()=>navigateToLatestAudio()}>
+                            <strong>More</strong>
+                        </Button>{' '}
+                    </Col>
+                </Row>
+                <div className="featured-audios">
+                    <Carousel carouselData={homeDocList} slideIdentity = {"home_docs"}/>
                 </div>
                 
             </Container>

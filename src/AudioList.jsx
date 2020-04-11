@@ -1,11 +1,17 @@
 import React, { useContext,useState, useEffect } from 'react';
 import {SiteContext} from './SiteContext';
 import {Row, Col, Container } from 'react-bootstrap';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 import Styled from "styled-components";
 
-export const AudioList = () => {
+export const AudioList = (props) => {
     var contextData = useContext(SiteContext);
     const {siteData} = contextData;
+    const audioIdParam = props.location && props.location.state &&  props.location.state.audioIdParamprops ? 
+    props.location.state.audioIdParamprops : '';
+    console.log('audio param', props.location.state)
+    const [audioId, setAudioId] = useState(audioIdParam ? audioIdParam : '' );
     var allLatestAudio=[];
     if(siteData && siteData.audio_list && siteData.audio_list.length > 0) {
         //console.log('jabir====', siteData)
@@ -27,10 +33,16 @@ export const AudioList = () => {
             
         })
     }
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [audioId])
+    const handlethumbnailClick = (videoPlayingId) => {
+        setAudioId(videoPlayingId)
+    }
     const allLatestAudioList = (allLatestAudio) => {
         return (
             allLatestAudio.map(latestAudioItem => (
-                <div className="all-featured-list">
+                <div className="all-featured-list" onClick={()=>handlethumbnailClick(latestAudioItem.file)}>
                     <Row>
                         <Col xs={5} md={3}><img src={`${contextData.fileURL}${latestAudioItem.thumbnail}`} alt={"video list"}/></Col>
                         <Col xs={7} md={9}>
@@ -42,9 +54,30 @@ export const AudioList = () => {
             ))
         )
     }
+    console.log('currentAudioid', `${contextData.fileURL}${audioId}`)
     return (
         <Styles>
             <Container>
+                
+                {/* <audio controls preload="none" autoplay
+                    src={`${contextData.fileURL}${audioId}`}>
+                </audio> */}
+                {/* <audio controls autoplay>
+                <source src={`${contextData.fileURL}${audioId}`} type="audio/mpeg" />
+                
+                </audio> */}
+                <AudioPlayer
+                    autoPlay
+                    showSkipControls={false}
+                    showJumpControls={false}
+                    volume={0.8}
+                    src={`${contextData.fileURL}${audioId}`}
+                    loop={false}
+                    loopOff={true}
+                    customAdditionalControls={[]}
+                    // other props here
+                />
+                
                 <div className="latestAudioContainer">
                     
                     {allLatestAudio.length >0 && allLatestAudioList(allLatestAudio)}
