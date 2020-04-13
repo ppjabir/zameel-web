@@ -21,8 +21,6 @@ export const NavigationBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
                             <NavItem><Link to="/about">About</Link></NavItem>
-                            <NavItem><Link to="/featureVideos">Feature Videos</Link></NavItem>
-                            <NavItem><Link to="/audioList">Latest Audio</Link></NavItem>
                         </Nav>
                         
                     </Navbar.Collapse>
@@ -51,6 +49,13 @@ const Styles = Styled.div`
             img {
                 display: inline-block;
                 margin-right: 15px;
+
+                @media screen and (max-width: 768px) {
+                    max-width: 30%;
+                }
+                @media screen and (min-width:768px) and (max-width: 992px) {
+                    max-width: 40%;
+                }
             }
             &:hover {
                 text-decoration: none;

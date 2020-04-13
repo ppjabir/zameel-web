@@ -20,22 +20,25 @@ export const Carousel = (props) =>{
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        pauseOnHover: true
+        pauseOnHover: true,
+        easing: 'easeOutElastic',
       }
-    }else if(slideIdentity === 'home_video' || slideIdentity === 'home_audio' || slideIdentity === 'home_docs') {
+    }else if(slideIdentity === 'home_video' || slideIdentity === 'home_audio' || slideIdentity === 'home_docs' || slideIdentity === 'sec-light') {
       settings = {
         dots: false,
         infinite: false,
-        speed: 500,
-        slidesToShow: 5,
+        speed: 600,
+        slidesToShow: slideIdentity === 'sec-light' ? 4 : 5,
         slidesToScroll: 1,
         initialSlide: 0,
         arrows: true,
+        adaptiveHeight: false,
+        easing: 'easeOutElastic',
         responsive: [
           {
             breakpoint: 992,
             settings: {
-              slidesToShow: 4,
+              slidesToShow: slideIdentity === 'sec-light' ? 3 : 4,
               slidesToScroll: 1,
               infinite: false,
               dots: false,
@@ -45,18 +48,23 @@ export const Carousel = (props) =>{
           {
             breakpoint: 700,
             settings: {
-              slidesToShow: 3,
+              slidesToShow: slideIdentity === 'sec-light' ? 2 : 3,
               slidesToScroll: 1,
-              initialSlide: 1,
-              arrows: false
+              infinite: false,
+              dots: false,
+              arrows: false,
+              draggable: true,
+              initialSlide: 0
             }
           },
           {
             breakpoint: 480,
             settings: {
-              slidesToShow: 2,
+              slidesToShow: slideIdentity === 'sec-light' ? 1 : 2,
               slidesToScroll: 1,
-              arrows: false
+              arrows: false,
+              draggable: true,
+              initialSlide: 0
             }
           }
         ]
@@ -64,12 +72,22 @@ export const Carousel = (props) =>{
     }
 
     const history = useHistory();
-    const playCurrentVideo = (fileId, clickType) => {
-        if(clickType === 'video_click') {
-          history.push('/featureVideos',{videoIdParamprops:fileId})
-        }else if(clickType === 'audio_click'){
-          history.push('/audioList',{audioIdParamprops:fileId})
+    const playCurrentAudioVideo = (fileId, fromJourney, description=null) => {
+      if(fromJourney === 'docs') {
+        if(description !== null) {
+          const stripDescription = description.replace(/<\/?[^>]+(>|$)/g, "");
+          if (stripDescription.indexOf("http") === 0) {
+            window.location.replace(stripDescription)
+          }else {
+            window.open(`${contextData.fileURL}${fileId}`)
+          }
+        }else {
+          window.open(`${contextData.fileURL}${fileId}`)
         }
+      }else {
+        history.push('/allListings',{paramIdProps:fileId, fromJourney})
+      }
+      
     }
     
     const displayCarousel =(slideIdentity) => {
@@ -82,13 +100,13 @@ export const Carousel = (props) =>{
       }else if(slideIdentity === 'home_video') {
         return (
           carouselData.map((carouselItem,index) => (
-            <div key={index} className="video-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'video_click')}>
+            <div key={index} className="video-list-item" onClick={()=>playCurrentAudioVideo(carouselItem.video, 'video')}>
               <div className="video-item">
                 <img src={`${contextData.youTubeThumb}${carouselItem.video}/mqdefault.jpg`} alt={"video list"}/>
                 <Shiitake lines={2} throttleRate={200} className="video-title text-info" tagName="p">
                   {carouselItem.title_1}
                 </Shiitake>
-                <h6><small>{carouselItem.tags.split(',')[0]}</small></h6>
+                <h6><small>{carouselItem.tags ? carouselItem.tags.split(',')[0] : ''}</small></h6>
               </div>
             </div>
           ))
@@ -96,13 +114,13 @@ export const Carousel = (props) =>{
       }else if(slideIdentity === 'home_audio') {
         return (
           carouselData.map((carouselItem, index) => (
-            <div key={index} className="audio-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'audio_click')}>
+            <div key={index} className="audio-list-item" onClick={()=>playCurrentAudioVideo(carouselItem.file, 'audio')}>
               <div className="audio-item">
                 <img src={`${contextData.fileURL}${carouselItem.thumbnail}`} alt={"audio list"}/>
                 <Shiitake lines={2} throttleRate={200} className="audio-title text-info" tagName="p">
                   {carouselItem.title_1}
                 </Shiitake>
-                <h6><small>{carouselItem.tags.split(',')[0]}</small></h6>
+                <h6><small>{carouselItem.tags ? carouselItem.tags.split(',')[0] : ''}</small></h6>
                 
               </div>
             </div>
@@ -111,7 +129,7 @@ export const Carousel = (props) =>{
       }else if(slideIdentity === 'home_docs') {
         return (
           carouselData.map((carouselItem,index) => (
-            <div key={index} className="audio-list-item" onClick={()=>playCurrentVideo(carouselItem.file, 'audio_click')}>
+            <div key={index} className="audio-list-item" onClick={()=>playCurrentAudioVideo(carouselItem.file, 'docs', carouselItem.description)}>
               <div className="docs-item">
                 <img src={`${contextData.fileURL}${carouselItem.thumbnail}`} alt={"docs list"}/>
                 <Shiitake lines={2} throttleRate={200} className="audio-title text-info" tagName="p">
@@ -123,29 +141,30 @@ export const Carousel = (props) =>{
             </div>
           ))
         )
+      }else if(slideIdentity === 'sec-light') {
+        return (
+          carouselData.map((carouselItem, index) => (
+            <div key={index} className="light-img">
+              <img src={`${contextData.fileURL}${carouselItem.file}`} alt="{banner}" />
+            </div>
+          ))
+        )
       }
 
     }
 
     return (
       <Styles>
-        {carouselData.length === 0? (
-          <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        ):(
           <Slider {...settings} className={slideIdentity}>
             {displayCarousel(slideIdentity)}
           </Slider>
-        )}
-        
       </Styles>
     );
 }
 
 const Styles = Styled.div`
   .slick-slider {
-    &.home_video, &.home_audio, &.home_docs {
+    &.home_video, &.home_audio, &.home_docs, &.sec-light {
       .slick-prev,
       .slick-next {
         &:before {
@@ -159,6 +178,11 @@ const Styles = Styled.div`
       .slick-track{
         .slick-slide {
           height: auto;
+          div {
+            &:focus {
+              outline: none; !important
+            }
+          }
           .video-list-item,
           .audio-list-item {
             height: 100%;
@@ -198,41 +222,7 @@ const Styles = Styled.div`
                 }
               }
             }
-            .audio-item,
-            .docs-item {
-              min-height: 180px;
-              @media screen and (min-width: 992px) and (max-width: 1200px) {
-                min-height: 170px;
-              }
-              @media screen and (min-width: 576px) and (max-width: 992px) {
-                min-height: 160px;
-              }
-              @media screen and (min-width: 480px) and (max-width: 576px) {
-                min-height: 152px;
-              }
-              @media screen and (max-width: 400px) {
-                min-height: 160px;
-              }
-            }
-            .video-item {
-              min-height: 204px;
-              @media screen and (min-width: 992px) and (max-width: 1200px) {
-                min-height: 182px;
-              }
-              @media screen and (min-width: 576px) and (max-width: 992px) {
-                min-height: 152px;
-              }
-              @media screen and (min-width: 480px) and (max-width: 576px) {
-                min-height: 132px;
-              }
-              @media screen and (min-width: 400px) and (max-width: 480px) {
-                min-height: 200px;
-              }
-              @media screen and (max-width: 400px) {
-                min-height: 160px;
-              }
-              
-            }
+            
           }
         }
       }
@@ -253,6 +243,20 @@ const Styles = Styled.div`
       img {
         max-width: 80%;
         margin: 0 auto;
+        &:foucus {
+          border: 0 none;
+          outline: none;
+        }
+      }
+    }
+  }
+  .light-img {
+    padding: 0 5px;
+    img {
+      max-width: 100%;
+      &:foucus {
+        border: 0 none;
+        outline: none;
       }
     }
   }

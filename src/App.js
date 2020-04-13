@@ -3,8 +3,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './Home';
 import { About } from './About';
-import { FeatureVideos } from './FeatureVideos';
-import { AudioList } from './AudioList';
+import { AllListings } from './AllListings';
 import { NoMatch } from './NoMatch';
 import { NavigationBar } from './components/NavigationBar';
 import {SiteContext} from './SiteContext';
@@ -37,7 +36,7 @@ function App() {
     axios(options)
     .then(response => {
       //console.log(response);
-      response.data.banner_list = _.orderBy(response.data.banner_list, ['order'], ['asc']);
+      response.data.banner_list = _.orderBy(response.data.banner_list, ['order'], ['desc']);
       response.data.video_list = _.orderBy(response.data.video_list, ['priority'], ['desc']);
       response.data.audio_list = _.orderBy(response.data.audio_list, ['priority'], ['desc']);
       response.data.documents_list = _.sortBy(response.data.documents_list, function(o) { return new moment(o.date).format('YYYYMMDD'); }).reverse();
@@ -63,8 +62,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
-              <Route exact path="/featureVideos" component={FeatureVideos} />
-              <Route exact path="/audioList" component={AudioList} />
+              <Route exact path="/allListings" component={AllListings} />
               <Route component={NoMatch} />
             </Switch>
           </Router>
