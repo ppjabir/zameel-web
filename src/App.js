@@ -11,7 +11,7 @@ import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 var _ = require('lodash');
 
-const BASE_API_URL = "http://portal.zameelapp.com/api/";
+const BASE_API_URL = "https://portal.zameelapp.com/api/";
 const BASE_FILE_URL = "http://files.zameelapp.com/";
 const YOUTUBE_THUMB_IMAGE = "https://img.youtube.com/vi/";
 
