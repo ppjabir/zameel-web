@@ -11,19 +11,19 @@ import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 var _ = require('lodash');
 
-const BASE_API_URL = "https://portal.zameelapp.com/api/";
+const BASE_API_URL = "https://portal.zameelapp.com/";
 const BASE_FILE_URL = "http://files.zameelapp.com/";
 const YOUTUBE_THUMB_IMAGE = "https://img.youtube.com/vi/";
-
 function App() {
   const [siteData, setSiteData] = useState(null);
   useEffect(() => {
     const options = {
-      url: 'https://portal.zameelapp.com/api/gethometabdata',
+      url: '/api/gethometabdata',
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8'
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Access-Control-Allow-Origin': '*'
       },
       data: {
         userId: '123',
