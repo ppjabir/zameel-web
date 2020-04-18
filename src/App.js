@@ -2,7 +2,7 @@ import React , { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './Home';
-import { About } from './About';
+import { Videos } from './Videos';
 import { AllListings } from './AllListings';
 import { NoMatch } from './NoMatch';
 import { NavigationBar } from './components/NavigationBar';
@@ -61,7 +61,7 @@ function App() {
           <NavigationBar />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/about" component={About} />
+              <Route exact path="/videos" component={Videos} />
               <Route exact path="/allListings" component={AllListings} />
               <Route component={NoMatch} />
             </Switch>

@@ -4,6 +4,7 @@ import  { Redirect } from 'react-router-dom'
 import {Row, Col, Container } from 'react-bootstrap';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import ReactPlayer from 'react-player'
 import Styled from "styled-components";
 
 export const AllListings = (props) => {
@@ -82,18 +83,18 @@ export const AllListings = (props) => {
     const allLatestDataList = (allLatestData) => {
         if(paramFromJourney === 'docs') {
             return (
-                <Row xs={2} sm={3} md={4} lg={5} className="equal">
+                <Row xs={1} sm={3} md={4} lg={5} className="equal">
                     {allLatestData.map((allLatestDataItem, key) => ( 
                         <Col key={key}>
-                            <div className="all-featured-list"
+                            <div className="all-featured-list clearfix"
                             onClick={()=>handlethumbnailClick(allLatestDataItem.file, 'docs', allLatestDataItem.description)}>
-                                <img src={ paramFromJourney === 'video' ?
-                                    `${contextData.youTubeThumb}${allLatestDataItem.video}/mqdefault.jpg` :
-                                    `${contextData.fileURL}${allLatestDataItem.thumbnail}`
-                                    } alt={"Video Audio Thumb"}
-                                />
-                                <p className="text-info">{allLatestDataItem.title_1}</p>
-                                <h6><small>{allLatestDataItem.title_1_ml}</small></h6>
+                                <div className="div-container">
+                                    <img src={`${contextData.fileURL}${allLatestDataItem.thumbnail}`} alt={"Video Audio Thumb"} />
+                                </div>
+                                <div className="div-container">
+                                    <p className="text-info">{allLatestDataItem.title_1}</p>
+                                    <h6><small>{allLatestDataItem.title_1_ml}</small></h6>
+                                </div>    
                             </div>
                         </Col>
                     ))}
@@ -101,18 +102,22 @@ export const AllListings = (props) => {
             )
         }else {
             return (
-                <Row xs={2} sm={3} md={4} lg={5} className="equal">
+                <Row xs={1} sm={3} md={4} lg={5} className="equal">
                     {allLatestData.map((allLatestDataItem, key) => ( 
                         <Col key={key} >
-                            <div className="all-featured-list"
+                            <div className="all-featured-list clearfix"
                             onClick={()=>handlethumbnailClick(paramFromJourney === 'video' ? allLatestDataItem.video : allLatestDataItem.file)}>
-                                <img src={ paramFromJourney === 'video' ?
-                                    `${contextData.youTubeThumb}${allLatestDataItem.video}/mqdefault.jpg` :
-                                    `${contextData.fileURL}${allLatestDataItem.thumbnail}`
-                                    } alt={"Video Audio Thumb"}
-                                />
-                                <p className="text-info">{allLatestDataItem.title_1}</p>
-                                <h6><small>{allLatestDataItem.tags? allLatestDataItem.tags.split(',')[0] : ''}</small></h6>
+                                <div className="div-container">
+                                    <img src={ paramFromJourney === 'video' ?
+                                        `${contextData.youTubeThumb}${allLatestDataItem.video}/mqdefault.jpg` :
+                                        `${contextData.fileURL}${allLatestDataItem.thumbnail}`
+                                        } alt={"Video Audio Thumb"}
+                                    />
+                                </div>
+                                <div className="div-container">
+                                    <p className="text-info">{allLatestDataItem.title_1}</p>
+                                    <h6><small>{allLatestDataItem.tags? allLatestDataItem.tags.split(',')[0] : ''}</small></h6>
+                                </div>
                             </div>
                         </Col>
                     ))}
@@ -122,7 +127,17 @@ export const AllListings = (props) => {
     }
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        //window.scrollTo(0, 0)
+        //setTimeout(window.scrollTo(0,0),200);
+        // setTimeout(() => {
+        //     window.scrollTo({
+        //         top: 0,
+        //         behavior: "smooth"
+        //     });
+        // },500)
+        // document.body.scrollTop = 0;
+        // document.documentElement.scrollTop = 0;
+        document.getElementById("root").scrollIntoView({ behavior: 'smooth'});
     }, [fileId])
     if (!props.location || !props.location.state) {
         console.log("&&&&&&&&&&&&&",props.location)
@@ -132,13 +147,30 @@ export const AllListings = (props) => {
         <Styles>
             <Container>
                 { fileId && paramFromJourney ==='video' && (
-                    <div className="ifram-container">
-                        <iframe width="420"
-                            height="345"
-                            title="Video Player"
-                            allowfullscreen="true"
-                            src={`https://www.youtube.com/embed/${fileId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay" frameborder="0">
-                        </iframe>
+                    <div className="video-container">
+                        <div className="iframe-container">
+                            {/* <iframe width="420"
+                                height="345"
+                                title="Video Player"
+                                allowfullscreen="true"
+                                https://www.youtube.com/embed/78vFAspdxRI?autoplay=1&mute=0&controls=1&origin=http%3A%2F%2Flocalhost%3A3000&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&ecver=2&enablejsapi=1&widgetid=1
+                                src={`https://www.youtube.com/embed/${fileId}?autoplay=1&rel=0&modestbranding=1`} allow="autoplay" frameborder="0">
+                            </iframe> */}
+                            <ReactPlayer
+                                className="player"
+                                url={`https://www.youtube.com/embed/${fileId}?rel=0&modestbranding=1`} 
+                                playing
+                                controls
+                                //youtubeConfig={{ playerVars: { showinfo: 0, rel: 0, ecver: 2 } }}
+                                config={{
+                                    youtube: {
+                                    playerVars: { showinfo: 0, rel:0, ecver:2 }
+                                    }
+                                }}
+                                width='100%'
+                                height='100%'
+                            />
+                        </div>
                     </div>
                 )}
                 { fileId && paramFromJourney ==='audio' && (
@@ -167,16 +199,19 @@ export const AllListings = (props) => {
 }
 
 const Styles = Styled.div`
-    .ifram-container {
+    .video-container {
+        min-height: 100px;
+    }
+    .iframe-container {
         position: relative;
         width: 100%;
-        padding-bottom: 56.25%;
+        padding-top: 56.25%;
         height: 0;
         margin-top: 20px;
         @media screen and (max-width: 700px) {
             margin-top: 10px;
         }
-        iframe {
+        .player {
             position: absolute;
             top: 0;
             left: 0;
@@ -204,7 +239,7 @@ const Styles = Styled.div`
         }
         @media screen and (max-width: 576px) {
             margin-bottom: 15px;
-            height: 95%;
+            height: auto;
         }
         img {
             max-width: 100%;
@@ -213,6 +248,11 @@ const Styles = Styled.div`
             padding: 7px 10px;
             margin-bottom: 0;
             word-wrap: break-word;
+            @media screen and (max-width: 576px) {
+                font-size: 13px;
+                line-height: 1.2;
+                padding: 5px 5px 2px 7px;
+            }
         }
         h6 {
             margin-bottom: 0;
@@ -221,6 +261,17 @@ const Styles = Styled.div`
         &:hover {
             .text-info, h6 {
                 color: #007bff!important
+            }
+        }
+        .div-container {
+            @media screen and (max-width: 576px) {
+                float: left;
+                width: 60%;
+            }
+            &:first-child {
+                @media screen and (max-width: 576px) {
+                    width: 40%;
+                }
             }
         }
     }

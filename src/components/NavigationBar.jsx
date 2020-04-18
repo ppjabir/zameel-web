@@ -1,7 +1,6 @@
 import React from 'react';
 import {Navbar, Nav, Container, NavItem} from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import logo from '../logo.jpg';
 import Styled from "styled-components";
 
 export const NavigationBar = () => {
@@ -12,7 +11,7 @@ export const NavigationBar = () => {
                 
                     <Navbar.Brand>
                             <Link to="/">
-                                <img width="100" src={logo} alt="Logo" />
+                                <img width="100" src={process.env.PUBLIC_URL + '/img/logo.jpg'} alt="Logo" />
                                 Zameel
                             </Link>
                            </Navbar.Brand>  
@@ -20,7 +19,8 @@ export const NavigationBar = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
-                            <NavItem><Link to="/about">About</Link></NavItem>
+                        <NavItem><Link to="/">Home</Link></NavItem>
+                            <NavItem><Link to="/videos">Videos</Link></NavItem>
                         </Nav>
                         
                     </Navbar.Collapse>

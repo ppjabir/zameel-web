@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-export const About = () => {
+export const Videos = () => {
     return (
         <>
             <Container>
-                <h3>About us</h3>
+                <h3>Videos Page Under Construction</h3>
             </Container>
         </>
     )

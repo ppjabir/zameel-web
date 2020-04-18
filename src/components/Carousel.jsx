@@ -61,7 +61,7 @@ export const Carousel = (props) =>{
             breakpoint: 480,
             settings: {
               slidesToShow: slideIdentity === 'sec-light' ? 1 : 2,
-              slidesToScroll: 1,
+              slidesToScroll: 2,
               arrows: false,
               draggable: true,
               initialSlide: 0
