@@ -85,7 +85,7 @@ export const Carousel = (props) =>{
           window.open(`${contextData.fileURL}${fileId}`)
         }
       }else {
-        history.push('/allListings',{paramIdProps:fileId, fromJourney})
+        history.push(`${process.env.PUBLIC_URL}/allListings`,{paramIdProps:fileId, fromJourney})
       }
       
     }

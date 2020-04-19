@@ -18,7 +18,7 @@ function App() {
   const [siteData, setSiteData] = useState(null);
   useEffect(() => {
     const options = {
-      url: 'api/gethometabdata',
+      url: `${process.env.PUBLIC_URL}/api/gethometabdata`,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -57,7 +57,7 @@ function App() {
       <SiteContext.Provider value={zameelContextData}>
         
         
-          <Router>
+          <Router basename={'/zameelWeb'}>
           <NavigationBar />
             <Switch>
               <Route exact path="/" component={Home} />
