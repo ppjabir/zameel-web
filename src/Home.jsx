@@ -78,7 +78,7 @@ export const Home = () => {
     
     const history = useHistory();
     const navigateToAllVideoAudio = (fromJourney) => {
-        history.push(`${process.env.PUBLIC_URL}/allListings`,{fromJourney})
+        history.push("/allListings",{fromJourney})
     }
     return (
         

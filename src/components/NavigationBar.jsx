@@ -10,8 +10,8 @@ export const NavigationBar = () => {
                 <Container>
                 
                     <Navbar.Brand>
-                            <Link to={`${process.env.PUBLIC_URL}/`}>
-                                <img width="100" src={process.env.PUBLIC_URL + '/img/logo.jpg'} alt="Logo" />
+                            <Link to="/">
+                                <img width="100" src="./img/logo.jpg" alt="Logo" />
                                 Zameel
                             </Link>
                            </Navbar.Brand>  
@@ -19,8 +19,8 @@ export const NavigationBar = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
-                        <NavItem><Link to={`${process.env.PUBLIC_URL}/`}>Home</Link></NavItem>
-                            <NavItem><Link to={`${process.env.PUBLIC_URL}/videos`}>Videos</Link></NavItem>
+                        <NavItem><Link to="/">Home</Link></NavItem>
+                            <NavItem><Link to="/videos">Videos</Link></NavItem>
                         </Nav>
                         
                     </Navbar.Collapse>

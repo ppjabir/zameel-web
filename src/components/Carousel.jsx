@@ -1,13 +1,17 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {SiteContext} from '../SiteContext';
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import Slider from "react-slick";
 import Styled from "styled-components";
 import Shiitake from 'shiitake';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 import { useHistory } from "react-router-dom";
 
 export const Carousel = (props) =>{
+    const [currentImage, setCurrentImage] = useState('');
+    const [photoIndex, setPhotoIndex] = useState(0);
     var contextData = useContext(SiteContext);
     const { carouselData, slideIdentity } = props;
     var settings = {};
@@ -22,6 +26,7 @@ export const Carousel = (props) =>{
         autoplay: true,
         pauseOnHover: true,
         easing: 'easeOutElastic',
+        adaptiveHeight: true
       }
     }else if(slideIdentity === 'home_video' || slideIdentity === 'home_audio' || slideIdentity === 'home_docs' || slideIdentity === 'sec-light') {
       settings = {
@@ -29,7 +34,7 @@ export const Carousel = (props) =>{
         infinite: false,
         speed: 600,
         slidesToShow: slideIdentity === 'sec-light' ? 4 : 5,
-        slidesToScroll: 1,
+        slidesToScroll: slideIdentity === 'sec-light' ? 4 : 5,
         initialSlide: 0,
         arrows: true,
         adaptiveHeight: false,
@@ -39,7 +44,7 @@ export const Carousel = (props) =>{
             breakpoint: 992,
             settings: {
               slidesToShow: slideIdentity === 'sec-light' ? 3 : 4,
-              slidesToScroll: 1,
+              slidesToScroll: slideIdentity === 'sec-light' ? 3 : 4,
               infinite: false,
               dots: false,
               arrows: true
@@ -49,7 +54,7 @@ export const Carousel = (props) =>{
             breakpoint: 700,
             settings: {
               slidesToShow: slideIdentity === 'sec-light' ? 2 : 3,
-              slidesToScroll: 1,
+              slidesToScroll: slideIdentity === 'sec-light' ? 2 : 3,
               infinite: false,
               dots: false,
               arrows: false,
@@ -61,7 +66,7 @@ export const Carousel = (props) =>{
             breakpoint: 480,
             settings: {
               slidesToShow: slideIdentity === 'sec-light' ? 1 : 2,
-              slidesToScroll: 2,
+              slidesToScroll: slideIdentity === 'sec-light' ? 1 : 2,
               arrows: false,
               draggable: true,
               initialSlide: 0
@@ -85,10 +90,23 @@ export const Carousel = (props) =>{
           window.open(`${contextData.fileURL}${fileId}`)
         }
       }else {
-        history.push(`${process.env.PUBLIC_URL}/allListings`,{paramIdProps:fileId, fromJourney})
+        history.push("/allListings",{paramIdProps:fileId, fromJourney})
       }
       
     }
+
+    const handleClickImage = (e, image,index) => {
+      console.log('image path:', image);
+      e && e.preventDefault();
+      setPhotoIndex(index);
+      setCurrentImage(image);
+     }
+
+    const handleCloseModal = (e) => {
+      e && e.preventDefault();
+      setCurrentImage('');
+    }
+   
     
     const displayCarousel =(slideIdentity) => {
       if(slideIdentity === 'banner') {
@@ -142,22 +160,52 @@ export const Carousel = (props) =>{
           ))
         )
       }else if(slideIdentity === 'sec-light') {
+        
         return (
           carouselData.map((carouselItem, index) => (
+            
             <div key={index} className="light-img">
-              <img src={`${contextData.fileURL}${carouselItem.file}`} alt="{banner}" />
+              <img
+                src={`${contextData.fileURL}${carouselItem.file}`}
+                alt="{banner}"
+                onClick={ e => handleClickImage(e, `${contextData.fileURL}${carouselItem.file}`, index)}
+              />
             </div>
           ))
         )
       }
 
     }
+    let imageSets = []
+    if(slideIdentity === 'sec-light') {
+        carouselData.forEach((carouselItem) => (
+          imageSets.push(`${contextData.fileURL}${carouselItem.file}`)
+        ))
+    }
+
+    console.log('imageSetsArray', imageSets)
+    console.log('photoIndex', photoIndex)
 
     return (
       <Styles>
           <Slider {...settings} className={slideIdentity}>
             {displayCarousel(slideIdentity)}
           </Slider>
+          {currentImage &&
+          <Lightbox
+            mainSrc={imageSets[photoIndex]}
+            onCloseRequest={ e => handleCloseModal(e)}
+            nextSrc={imageSets[(photoIndex + 1) % imageSets.length]}
+            prevSrc={imageSets[(photoIndex + imageSets.length - 1) % imageSets.length]}
+            onMovePrevRequest={() =>
+              setPhotoIndex((photoIndex + imageSets.length - 1) % imageSets.length)
+            }
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % imageSets.length)
+            }
+
+          />
+      }
       </Styles>
     );
 }

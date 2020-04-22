@@ -18,7 +18,7 @@ function App() {
   const [siteData, setSiteData] = useState(null);
   useEffect(() => {
     const options = {
-      url: `${process.env.PUBLIC_URL}/api/gethometabdata`,
+      url: `${BASE_API_URL}api/gethometabdata`,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
