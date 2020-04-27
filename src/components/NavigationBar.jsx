@@ -20,7 +20,7 @@ export const NavigationBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
                         <NavItem><Link to="/">Home</Link></NavItem>
-                            <NavItem><Link to="/videos">Videos</Link></NavItem>
+                            <NavItem><Link to="/events">Events</Link></NavItem>
                         </Nav>
                         
                     </Navbar.Collapse>

@@ -2,7 +2,7 @@ import React , { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './Home';
-import { Videos } from './Videos';
+import { Events } from './Events';
 import { AllListings } from './AllListings';
 import { NoMatch } from './NoMatch';
 import { NavigationBar } from './components/NavigationBar';
@@ -11,7 +11,7 @@ import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 var _ = require('lodash');
 
-const BASE_API_URL = "https://portal.zameelapp.com/";
+const BASE_API_URL = "http://portal.zameelapp.com/";
 const BASE_FILE_URL = "http://files.zameelapp.com/";
 const YOUTUBE_THUMB_IMAGE = "https://img.youtube.com/vi/";
 function App() {
@@ -61,7 +61,7 @@ function App() {
           <NavigationBar />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/videos" component={Videos} />
+              <Route exact path="/events" component={Events} />
               <Route exact path="/allListings" component={AllListings} />
               <Route component={NoMatch} />
             </Switch>
